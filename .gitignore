@@ -1,0 +1,5 @@
+*.class
+.git-ignore
+.git-attribute
+desktop.ini
+Thumbs.db
