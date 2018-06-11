@@ -19,25 +19,39 @@ public class Main implements Runnable {
       dd[i] = (i == first) ? 0 : Integer.MAX_VALUE;
       prevs[i] = -1;
     }
-    Queue<Integer> queue = new PriorityQueue((n1, n2) -> dd[n1.intValue()] - dd[n2.intValue()]);
+    Queue<Vertex> queue = new PriorityQueue((v1, v2) -> v1.dist - v2.dist);
     for (int i = 0 ; i < n ; i ++) {
-      queue.offer(i);
+      queue.offer(new Vertex(i, dd[i]));
     }
     while (!queue.isEmpty()) {
-      int c = queue.poll();
+      Vertex v = queue.poll();
+      int c = v.id;
+      if (dd[c] < v.dist) {
+        continue;
+      }
       for (int j = 0 ; j < paths[c].size() ; j ++) {
         int b = paths[c].get(j);
         int cost = costs[c].get(j);
-        if (dd[b] > dd[c] + cost) {
+        if (dd[c] < Integer.MAX_VALUE && dd[b] > dd[c] + cost) {
           dd[b] = dd[c] + cost;
           prevs[b] = c;
-          if (queue.remove(b)) {
-            queue.offer(b);
-          }
+          queue.offer(new Vertex(b, dd[b]));
         }
       }
     }
     return;
+  }
+
+  public static class Vertex {
+
+    public int id;
+    public int dist;
+
+    public Vertex(int id, int dist) {
+      this.id = id;
+      this.dist = dist;
+    }
+
   }
  
 }
