@@ -9,6 +9,7 @@ public class Main implements Runnable {
   // ・costs … 第 1 成分から第 2 成分への辺の重み (辺がない場合は Integer.MAX_VALUE)
   // ◆ 出力
   // ・dd … 最短距離
+  // ・neg … 重みが負の閉路が存在するか
   public void warshallFloyd(int n, int[][] costs) {
     int[][] dd = new int[n][n];
     for (int i = 0 ; i < n ; i ++) {
@@ -23,6 +24,13 @@ public class Main implements Runnable {
             dd[i][j] = dd[i][k] + dd[k][j];
           }
         }
+      }
+    }
+    boolean neg = false;
+    for (int i = 0 ; i < n ; i ++) {
+      if (dd[i][i] < 0) {
+        neg = true;
+        break;
       }
     }
     return;
